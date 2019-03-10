@@ -22,16 +22,20 @@ void car_patrol_line()
     extern int forward_speed;
     extern int turn_speed;
 
-    if( RightBlack()&&LeftBlack() ){
+    if( RightBlack()&&LeftBlack() )
+    {
         Car_GoForward(forward_speed);
     }
-    else if(RightBlack()){
+    else if(RightBlack())
+    {
         Car_TurnRight_Stay(turn_speed);
     }
-    else if(LeftBlack()){
+    else if(LeftBlack())
+    {
         Car_TurnLeft_Stay(turn_speed);
     }
-    else{
+    else
+    {
         Car_GoForward(forward_speed);
     }
 }
