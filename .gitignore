@@ -1,6 +1,6 @@
-/.launches
-/.settings
-/Debug
+.launches/
+.settings/
+Debug/
 .ccsproject
 .cproject
 .project

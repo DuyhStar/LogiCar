@@ -37,7 +37,7 @@
 uint16_t distance;
 int      turn_speed    = 50;
 int      forward_speed = 40;
-float    pitch, roll,  yaw  ;//Å·À­½Ç
+float    pitch, roll,  yaw;//Å·À­½Ç
 uint16_t servoVal[6]={760,850,600,770,1475,1000};
 uint8_t  servoUpdate = 0;
 uint8_t  count_enter = 0;
