@@ -102,7 +102,7 @@ int main(void)
 
     /************************************************************************/
     //抓取
-    //system_waitKey();
+    system_waitKey();
     servo_init(servoVal);//初始化机械臂控制并设置其初始位置
     delay_ms(500);
     //hand_set_servo();
