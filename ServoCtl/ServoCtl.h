@@ -24,6 +24,7 @@ void PCA9685_set_freq(float freq);
 void PCA9685_set_PWM(uint8_t num, uint16_t on, uint16_t off);
 void PCA9685_pulse_us_set(uint8_t num, uint16_t us);
 
+//手动设置舵机位置
 void hand_set_servo();
 
 /*主要通过这个函数操作舵机
