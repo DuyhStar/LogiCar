@@ -68,6 +68,32 @@ void car_goto_n_black_line(uint8_t n)
     }
 }
 
+void car_turn_left_90_degree()
+{
+    extern int turn_speed;
+    Car_TurnLeft_Stay(turn_speed);
+    delay_s(1);
+    while(1){
+        if(RightBlack()){
+            CarStop_turnLeft();
+            break;
+        }
+    }
+}
+
+void car_turn_right_90_degree()
+{
+    extern int turn_speed;
+    Car_TurnRight_Stay(turn_speed);
+    delay_s(1);
+    while(1){
+        if(RightBlack()){
+            CarStop_turnLeft();
+            break;
+        }
+    }
+}
+
 void Car_GoForward(uint16_t speed)
 {
     PWMOutputState(PWM0_BASE, PWM_OUT_0_BIT, 1);
