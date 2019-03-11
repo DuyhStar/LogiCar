@@ -68,6 +68,24 @@ void car_goto_n_black_line(uint8_t n)
     }
 }
 
+void car_begin_goto_first_pos()
+{
+    extern int forward_speed;
+
+    Car_GoForward(forward_speed);
+    while(!SideBlack())
+        ;
+    Car_Stop();
+    CarStop_forward();
+    delay_s(1);
+
+
+    Car_TurnRight_Stay(turn_speed);
+    while(!LeftBlack())
+        ;
+    Car_Stop();
+}
+
 void car_turn_left_90_degree()
 {
     extern int turn_speed;

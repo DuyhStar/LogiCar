@@ -15,6 +15,7 @@ void Car_Init();
 
 void car_patrol_line();
 void car_goto_n_black_line(uint8_t n);
+void car_begin_goto_first_pos();
 void car_turn_left_90_degree();
 void car_turn_right_90_degree();
 
