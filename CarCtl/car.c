@@ -8,111 +8,18 @@
 #include "driverlib/systick.h"
 #include "sensor.h"
 
-void Car_Init(void)
+//小车所用驱动PWM波初始化
+void car_init()
 {
     PWM0_0_Init();
     PWM0_1_Init();
     PWM0_2_Init();
     PWM0_3_Init();
-    Car_Stop();
+    car_stop();
 }
 
-void car_patrol_line()
-{
-    extern int forward_speed;
-    extern int turn_speed;
-
-    if( RightBlack()&&LeftBlack() )
-    {
-        Car_GoForward(forward_speed);
-    }
-    else if(RightBlack())
-    {
-        Car_TurnRight_Stay(turn_speed);
-    }
-    else if(LeftBlack())
-    {
-        Car_TurnLeft_Stay(turn_speed);
-    }
-    else
-    {
-        Car_GoForward(forward_speed);
-    }
-}
-
-void car_goto_n_black_line(uint8_t n)
-{
-    extern uint8_t count_enter;//全局变量
-
-    SysTickEnable();
-    while(1)
-    {
-        uint8_t count = 0;
-        car_patrol_line();
-
-        //每隔一秒触发一次黑线检测
-        if(SideBlack()&&(count_enter == 1)){
-            count++;
-            count_enter = 0;
-            SysTickEnable();
-        }
-
-        //经过了n条黑线
-        if(count == n){
-            SysTickDisable();
-            count_enter = 1;
-            Car_Stop();
-            CarStop_forward();
-            break;
-        }
-    }
-}
-
-void car_begin_goto_first_pos()
-{
-    extern int forward_speed;
-
-    Car_GoForward(forward_speed);
-    while(!SideBlack())
-        ;
-    Car_Stop();
-    CarStop_forward();
-    delay_s(1);
-
-
-    Car_TurnRight_Stay(turn_speed);
-    while(!LeftBlack())
-        ;
-    Car_Stop();
-}
-
-void car_turn_left_90_degree()
-{
-    extern int turn_speed;
-    Car_TurnLeft_Stay(turn_speed);
-    delay_s(1);
-    while(1){
-        if(RightBlack()){
-            CarStop_turnLeft();
-            break;
-        }
-    }
-}
-
-void car_turn_right_90_degree()
-{
-    extern int turn_speed;
-    Car_TurnRight_Stay(turn_speed);
-    delay_s(1);
-    while(1){
-        if(RightBlack()){
-            CarStop_turnLeft();
-            break;
-        }
-    }
-}
-
-void Car_GoForward(uint16_t speed)
+//前进
+void car_forward(uint16_t speed)
 {
     PWMOutputState(PWM0_BASE, PWM_OUT_0_BIT, 1);
     PWMOutputState(PWM0_BASE, PWM_OUT_1_BIT, 0);
@@ -122,7 +29,8 @@ void Car_GoForward(uint16_t speed)
     PWMPulseWidthSet(PWM0_BASE, PWM_OUT_2, speed*(PWMGenPeriodGet(PWM0_BASE, PWM_GEN_1)/100));
 }
 
-void Car_GoBack(uint16_t speed)
+//后退
+void car_back(uint16_t speed)
 {
     PWMOutputState(PWM0_BASE, PWM_OUT_0_BIT, 0);
     PWMOutputState(PWM0_BASE, PWM_OUT_1_BIT, 1);
@@ -132,7 +40,8 @@ void Car_GoBack(uint16_t speed)
     PWMPulseWidthSet(PWM0_BASE, PWM_OUT_3, speed*(PWMGenPeriodGet(PWM0_BASE, PWM_GEN_1)/100));
 }
 
-void Car_TurnLeft_Stay(uint16_t range)
+//前进后退的左转右转(左右转对于前后来说其实一样)
+void car_turn_left(uint16_t range)
 {
     PWMOutputState(PWM0_BASE, PWM_OUT_0_BIT, 1);
     PWMOutputState(PWM0_BASE, PWM_OUT_1_BIT, 0);
@@ -141,8 +50,7 @@ void Car_TurnLeft_Stay(uint16_t range)
     PWMPulseWidthSet(PWM0_BASE, PWM_OUT_0, range*(PWMGenPeriodGet(PWM0_BASE, PWM_GEN_0)/100));
     PWMPulseWidthSet(PWM0_BASE, PWM_OUT_3, range*(PWMGenPeriodGet(PWM0_BASE, PWM_GEN_1)/100));
 }
-
-void Car_TurnRight_Stay(uint16_t range)
+void car_turn_right(uint16_t range)
 {
     PWMOutputState(PWM0_BASE, PWM_OUT_0_BIT, 0);
     PWMOutputState(PWM0_BASE, PWM_OUT_1_BIT, 1);
@@ -152,7 +60,154 @@ void Car_TurnRight_Stay(uint16_t range)
     PWMPulseWidthSet(PWM0_BASE, PWM_OUT_2, range*(PWMGenPeriodGet(PWM0_BASE, PWM_GEN_1)/100));
 }
 
-void Car_Stop(void)
+//前进后退并巡线
+void car_forward_patrol_line()
+{
+    extern int forward_speed;
+    extern int turn_speed;
+
+    if( front_right_black() && front_left_black() )
+    {
+        car_forward(forward_speed);
+    }
+    else if(front_right_black())
+    {
+        car_turn_right(turn_speed);
+    }
+    else if(front_left_black())
+    {
+        car_turn_left(turn_speed);
+    }
+    else
+    {
+        car_forward(forward_speed);
+    }
+}
+void car_back_patrol_line()
+{
+    extern int forward_speed;
+    extern int turn_speed;
+
+    if( back_right_black() && back_left_black() )
+    {
+        car_back(forward_speed);
+    }
+    else if(front_right_black())
+    {
+        car_turn_right(turn_speed);
+    }
+    else if(back_left_black())
+    {
+        car_turn_left(turn_speed);
+    }
+    else
+    {
+        car_back(forward_speed);
+    }
+}
+
+//原地左右转90度
+void car_turn_left_90_degree()
+{
+    extern int turn_speed;
+    car_turn_left(turn_speed);
+    delay_s(1);
+    while(1){
+        if(front_right_black()){
+            car_stop_turn_left();
+            break;
+        }
+    }
+}
+void car_turn_right_90_degree()
+{
+    extern int turn_speed;
+    car_turn_right(turn_speed);
+    delay_s(1);
+    while(1){
+        if(front_right_black()){
+            car_stop_turn_left();
+            break;
+        }
+    }
+}
+
+//前进后退n个黑线
+void car_forward_goto_n_black_line(uint8_t n)
+{
+    extern uint8_t count_enter;//全局变量
+
+    SysTickEnable();
+    uint8_t count = 0;
+    while(1)
+    {
+        car_forward_patrol_line();
+
+        //每隔一秒触发一次黑线检测
+        if(middle_black()&&(count_enter == 1)){
+            count++;
+            count_enter = 0;
+            SysTickEnable();
+        }
+
+        //经过了n条黑线
+        if(count == n){
+            SysTickDisable();
+            count_enter = 1;
+            car_stop();
+            car_stop_forward();
+            break;
+        }
+    }
+}
+void car_back_goto_n_black_line(uint8_t n)
+{
+    extern uint8_t count_enter;//全局变量
+
+    SysTickEnable();
+    uint8_t count = 0;
+    while(1)
+    {
+        car_back_patrol_line();
+
+        //每隔一秒触发一次黑线检测
+        if(middle_black()&&(count_enter == 1)){
+            count++;
+            count_enter = 0;
+            SysTickEnable();
+        }
+
+        //经过了n条黑线
+        if(count == n){
+            SysTickDisable();
+            count_enter = 1;
+            car_stop_back();
+            break;
+        }
+    }
+}
+
+//到达第一个位置
+void car_begin_goto_first_pos()
+{
+    extern int forward_speed;
+    extern int turn_speed;
+
+    car_forward(forward_speed);
+    while(!middle_black())
+        ;
+    car_stop_forward();
+    delay_s(1);
+
+
+    car_turn_right(turn_speed);
+    while(!front_left_black())
+        ;
+    car_stop();
+}
+
+//一些停止函数
+void car_stop(void)
 {
     PWMOutputState(PWM0_BASE, PWM_OUT_0_BIT, 0);
     PWMOutputState(PWM0_BASE, PWM_OUT_1_BIT, 0);
@@ -160,32 +215,32 @@ void Car_Stop(void)
     PWMOutputState(PWM0_BASE, PWM_OUT_3_BIT, 0);
 }
 
-void CarStop_forward()
+void car_stop_forward()
 {
-    Car_GoBack(50);
+    car_back(50);
     delay_ms(100);
-    Car_Stop();
+    car_stop();
 }
 
-void CarStop_back()
+void car_stop_back()
 {
-    Car_GoForward(50);
+    car_forward(50);
     delay_ms(100);
-    Car_Stop();
+    car_stop();
 }
 
-void CarStop_turnRight()
+void car_stop_turn_right()
 {
-    Car_TurnLeft_Stay(50);
+    car_turn_left(50);
     delay_ms(100);
-    Car_Stop();
+    car_stop();
 }
 
-void CarStop_turnLeft()
+void car_stop_turn_left()
 {
-    Car_TurnRight_Stay(50);
+    car_turn_right(50);
     delay_ms(100);
-    Car_Stop();
+    car_stop();
 }
 
 

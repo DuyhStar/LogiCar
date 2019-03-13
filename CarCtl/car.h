@@ -11,24 +11,39 @@
 #include "PWM_Init.h"
 #include "delay.h"
 
-void Car_Init();
+//小车所用驱动PWM波初始化
+void car_init();
 
-void car_patrol_line();
-void car_goto_n_black_line(uint8_t n);
-void car_begin_goto_first_pos();
+//前进后退
+void car_forward(uint16_t speed);
+void car_back(uint16_t speed);
+
+//前进后退的左转右转
+void car_turn_left(uint16_t range);
+void car_turn_right(uint16_t range);
+
+//前进后退并巡线
+void car_forward_patrol_line();
+void car_back_patrol_line();
+
+//原地左右转90度
 void car_turn_left_90_degree();
 void car_turn_right_90_degree();
 
-void Car_GoForward(uint16_t speed);
-void Car_GoBack(uint16_t speed);
-void Car_TurnLeft_Stay(uint16_t range);
-void Car_TurnRight_Stay(uint16_t range);
+//前进后退n个黑线
+void car_forward_goto_n_black_line(uint8_t n);
+void car_back_goto_n_black_line(uint8_t n);
 
-void Car_Stop();
+//到达第一个位置
+void car_begin_goto_first_pos();
 
-void CarStop_forward();
-void CarStop_back();
-void CarStop_turnRight();
-void CarStop_turnLeft();
+//一些停止函数
+void car_stop();
+void car_stop_forward();
+void car_stop_back();
+void car_stop_turn_right();
+void car_stop_turn_left();
 
 #endif /* CARCTL_CAR_H_ */
+
+

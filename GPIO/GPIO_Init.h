@@ -30,7 +30,7 @@ void    PF1_Red_Init(void);
 void    PF2_Blue_Init(void);
 void    PF3_Green_Init(void);
 
-void    Key1_init();
+void    key1_init();
 uint8_t Key1_Read();
 void    system_waitKey();
 

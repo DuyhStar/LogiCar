@@ -17,11 +17,15 @@
 #include "driverlib/gpio.h"
 #include "UART_Init.h"
 
-void   BlackDetect_Init(void);
-int8_t LeftBlack(void);
-int8_t RightBlack(void);
-int8_t MiddleBlack(void);
-int8_t SideBlack(void);
+void   black_detect_init(void);
+
+int8_t front_left_black(void);
+int8_t front_right_black(void);
+
+int8_t middle_black(void);
+
+int8_t back_left_black(void);
+int8_t back_right_black(void);
 
 void   UART1_angle_mpu6050_init(uint32_t Baud);
 void   MPU6050_correct();

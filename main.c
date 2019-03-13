@@ -4,10 +4,11 @@
  * 右轮PWM：PB4 PB5
  * 按键1: PF4
  * 光电对管 :
- *    右：PA2
- *    左：PA3
- *    中：PA4
- *    边：PA5
+ *    前右：PA2
+ *    前左：PA3
+ *    中中：PA4
+ *    后左：PA5
+ *    后右：PE3
  * I2C0:SCL PB2
  *      SDA PB3
  * UART1角度获得  RX:PB0
@@ -35,12 +36,15 @@
 #define STOP while(1);
 
 uint16_t distance;
-int      turn_speed    = 50;
-int      forward_speed = 40;
-float    pitch, roll,  yaw;//欧拉角
-uint16_t servoVal[6]={760,850,600,770,1475,1000};
-uint8_t  servoUpdate = 0;
-uint8_t  count_enter = 0;
+int      turn_speed    = 50;                            //
+int      forward_speed = 40;                            //
+float    pitch, roll,  yaw;                             //欧拉角
+uint16_t servoVal[6]   = {760,850,600,770,1475,1000};   //舵机初始化角度值
+uint8_t  servoUpdate   = 0;                             //
+uint8_t  count_enter   = 0;                             //
+
+uint8_t  task[3]       = {1,2,3};                       //从二维码中读取的任务信息(1:红. 2:蓝. 3:绿.)
+uint8_t  color[3]      = {3,2,1};                       //物块摆放的颜色顺序
 
 int main(void)
 {
@@ -52,11 +56,11 @@ int main(void)
     UART0_Init(115200);                 //初始化串口0
     UART2_Init(9600);                   //初始化串口2，用来与串口屏通信
     PF123_RGB_Init();                   //指示灯初始化
-    BlackDetect_Init();                 //黑线检测初始化
-    Key1_init();                        //按键初始化
-    Car_Init();                         //小车所用4路PWM初始化
+    black_detect_init();                //黑线检测初始化
+    key1_init();                        //按键初始化
+    car_init();                         //小车所用4路PWM初始化
 
-    //按下按键,系统继续工作
+    //按下按键,开始工作
     system_waitKey();
     IntMasterEnable();
     GREEN1;
@@ -65,47 +69,51 @@ int main(void)
     car_begin_goto_first_pos();
 
     //小车巡线前行，并开始计数，行驶至二维码处
-    car_goto_n_black_line(6);
+    car_forward_goto_n_black_line(6);
+
+    //扫描二维码，获取任务信息
+    //TODO
 
     //小车从二维码处后退，行驶至物料存放点
-    delay_s(1);
-    Car_GoBack(forward_speed);
-    uint8_t count_4 = 0;
-    while(1){
-        if(SideBlack()&&(count_enter == 1)){
-            count_4++;
-            count_enter = 0;
-            SysTickEnable();
-        }
-        if(count_4 == 3){
-            count_enter = 0;
-            Car_Stop();
-            CarStop_back();
-            break;
-        }
-    }
+    car_forward_goto_n_black_line(3);
 
-    //抓取
+    //原地旋转90度,摆正方向
+    car_turn_left_90_degree();
+
     system_waitKey();
     servo_init(servoVal);//初始化机械臂控制并设置其初始位置
-    delay_ms(500);
-    //hand_set_servo();
-    goto_pos_1_middle();
 
-    system_waitKey();
-    Car_TurnLeft_Stay(turn_speed);
-    delay_s(1);
-    while(1){
-        if(RightBlack()){
-            CarStop_turnLeft();
+    //获取物块摆放的颜色顺序
+    //TODO
+
+    //hand_set_servo();
+    int i = 0;
+    for(;i<3;i++)
+    {
+        //TODO
+        //夹取第i个物体
+
+        car_forward_goto_n_black_line(3);
+
+        //TODO
+        //放置第i个物体
+
+        if(i == 2)
             break;
-        }
+        car_forward_goto_n_black_line(3);
     }
 
-    Car_GoForward(forward_speed);
-    delay_ms(500);
-    car_goto_n_black_line(2);
 
+    //返程
+    car_turn_left_90_degree();
+    car_forward_goto_n_black_line(3);
+    car_turn_left_90_degree();
+    car_forward_goto_n_black_line(3);
+    car_turn_right(turn_speed);
+    delay_ms(500);
+    car_forward(forward_speed);
+    delay_ms(500);
+    car_stop();
     STOP;
 }
 
