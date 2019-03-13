@@ -37,7 +37,14 @@ void servo_all_update(uint16_t *val);
 /*
  * 机械臂运动路径
  * */
-void goto_pos_1_middle();
+void place(uint8_t pos);
+
+void place_1();
+void place_2();
+void place_3();
+void take_1();
+void take_2();
+void take_3();
 
 #endif /* SERVOCTL_SERVOCTL_H_ */
 

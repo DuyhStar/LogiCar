@@ -87,22 +87,21 @@ int main(void)
     //TODO
 
     //hand_set_servo();
-    int i = 0;
-    for(;i<3;i++)
+    int i = 1;
+    for(;i<=3;i++)
     {
         //TODO
         //夹取第i个物体
 
         car_forward_goto_n_black_line(3);
 
-        //TODO
         //放置第i个物体
+        place(i);
 
-        if(i == 2)
+        if(i == 3)
             break;
         car_forward_goto_n_black_line(3);
     }
-
 
     //返程
     car_turn_left_90_degree();

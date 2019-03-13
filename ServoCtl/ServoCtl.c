@@ -65,22 +65,6 @@ void servo_all_update(uint16_t *val)
     }
 }
 
-void goto_pos_1_middle()
-{
-    servo_n_angle_set(1,1070);
-    servo_n_angle_set(0,1400);
-    servo_n_angle_set(2,980);
-    servo_n_angle_set(1,1350);
-    servo_n_angle_set(2,1160);
-    servo_n_angle_set(1,1680);
-    servo_n_angle_set(2,1280);
-    servo_n_angle_set(1,1770);
-    servo_n_angle_set(5,1810);
-    servo_n_angle_set(1,1170);
-    servo_n_angle_set(2,680);
-    servo_n_angle_set(1,870);
-    servo_n_angle_set(0,2100);
-}
 void PCA9685_set_freq(float freq)
 {
     uint8_t prescale;
@@ -134,4 +118,48 @@ void pca9685_reg_write(uint8_t reg_add, uint8_t data)
 void pca9685_reg_read(uint8_t reg_add, uint8_t *data)
 {
     I2CReadRegOneByte(PCA9685_I2C_ADD, PCA9685_ADD, reg_add, data);
+}
+
+void place(uint8_t pos)
+{
+    extern uint8_t task[3];
+
+    switch(task[pos-1])
+    {
+    case 1:
+        place_1();
+        break;
+    case 2:
+        place_2();
+        break;
+    case 3:
+        place_3();
+        break;
+    default:
+        break;
+    }
+}
+void place_1()
+{
+    //TODO
+}
+void place_2()
+{
+    //TODO
+}
+void place_3()
+{
+    //TODO
+}
+void take_1()
+{
+    //TODO
+}
+void take_2()
+{
+    //TODO
+}
+void take_3()
+{
+    //TODO
 }
