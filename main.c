@@ -90,8 +90,8 @@ int main(void)
     int i = 1;
     for(;i<=3;i++)
     {
-        //TODO
         //夹取第i个物体
+        take(i);
 
         car_forward_goto_n_black_line(3);
 

@@ -42,6 +42,9 @@ void place(uint8_t pos);
 void place_1();
 void place_2();
 void place_3();
+
+void take(uint8_t n);
+
 void take_1();
 void take_2();
 void take_3();

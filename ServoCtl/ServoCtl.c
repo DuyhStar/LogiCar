@@ -151,6 +151,35 @@ void place_3()
 {
     //TODO
 }
+
+void take(uint8_t n)
+{
+    extern uint8_t task[3];
+    extern uint8_t color[3];
+
+    int i = 0;
+    while(1)
+    {
+        if(color[i] == task[n-1])
+            break;
+        i++;
+    }
+    switch(i+1)
+    {
+    case 1:
+        take_1();
+        break;
+    case 2:
+        take_2();
+        break;
+    case 3:
+        take_3();
+        break;
+    default:
+        break;
+    }
+}
+
 void take_1()
 {
     //TODO
