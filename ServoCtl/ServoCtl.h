@@ -49,5 +49,7 @@ void take_1();
 void take_2();
 void take_3();
 
+void return_pos();
+
 #endif /* SERVOCTL_SERVOCTL_H_ */
 

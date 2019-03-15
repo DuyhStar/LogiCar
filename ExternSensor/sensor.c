@@ -62,7 +62,7 @@ int8_t back_left_black(void)
 }
 int8_t back_right_black(void)
 {
-    int32_t ui32state = GPIOPinRead(GPIO_PORTE_BASE, GPIO_PIN_5);
+    int32_t ui32state = GPIOPinRead(GPIO_PORTE_BASE, GPIO_PIN_3);
     if( (ui32state&GPIO_PIN_3) ==  GPIO_PIN_3)
         return 1;
     else

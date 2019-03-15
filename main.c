@@ -36,10 +36,10 @@
 #define STOP while(1);
 
 uint16_t distance;
-int      turn_speed    = 50;                            //
+int      turn_speed    = 45;                            //
 int      forward_speed = 40;                            //
 float    pitch, roll,  yaw;                             //欧拉角
-uint16_t servoVal[6]   = {760,850,600,770,1475,1000};   //舵机初始化角度值
+uint16_t servoVal[4]   = {1500,1350,680,1100};   //舵机初始化角度值
 uint8_t  servoUpdate   = 0;                             //
 uint8_t  count_enter   = 0;                             //
 
@@ -65,53 +65,85 @@ int main(void)
     IntMasterEnable();
     GREEN1;
 
+    system_waitKey();
     //小车出发至第一条线，然后原地右转90°,行驶至第一个十字交叉点。
     car_begin_goto_first_pos();
 
     //小车巡线前行，并开始计数，行驶至二维码处
-    car_forward_goto_n_black_line(6);
+    car_forward_goto_n_black_line(7);
 
     //扫描二维码，获取任务信息
     //TODO
+    delay_s(3);
 
     //小车从二维码处后退，行驶至物料存放点
-    car_forward_goto_n_black_line(3);
+    car_back(forward_speed);
+    delay_ms(500);
+    car_back_goto_n_black_line(3);
 
     //原地旋转90度,摆正方向
-    car_turn_left_90_degree();
+    delay_s(3);
+    car_turn_right_90_degree();
 
-    system_waitKey();
+//辅助摆正方向
+//    int t = 0;
+//    while(1)
+//    {
+//        car_back_patrol_line();
+//        delay_ms(10);
+//        t++;
+//        if(t > 400)
+//            break;
+//    }
+//    car_forward_goto_n_black_line(1);
+
     servo_init(servoVal);//初始化机械臂控制并设置其初始位置
 
     //获取物块摆放的颜色顺序
     //TODO
 
-    //hand_set_servo();
-    int i = 1;
-    for(;i<=3;i++)
-    {
-        //夹取第i个物体
-        take(i);
 
-        car_forward_goto_n_black_line(3);
+    take(1);//夹取第1个物体
+    delay_s(1);
+    car_back_goto_n_black_line(2);
+    place(1);//放置第1个物体
+    delay_s(1);
+    car_forward_goto_n_black_line(2);
 
-        //放置第i个物体
-        place(i);
+    take(2);//夹取第2个物体
+    delay_s(1);
+    car_back_goto_n_black_line(2);
+    place(2);//放置第2个物体
+    delay_s(1);
+    car_forward_goto_n_black_line(2);
 
-        if(i == 3)
-            break;
-        car_forward_goto_n_black_line(3);
-    }
+    take(3);//夹取第3个物体
+    delay_s(1);
+    car_back_goto_n_black_line(2);
+    place(3);//放置第3个物体
+    delay_s(1);
 
     //返程
-    car_turn_left_90_degree();
-    car_forward_goto_n_black_line(3);
-    car_turn_left_90_degree();
-    car_forward_goto_n_black_line(3);
-    car_turn_right(turn_speed);
-    delay_ms(500);
-    car_forward(forward_speed);
-    delay_ms(500);
+    car_turn_left(turn_speed);
+    delay_s(1);
+    while(1){
+        if(back_right_black()){
+            car_stop_turn_left();
+            break;
+        }
+    }
+    car_back_goto_n_black_line(2);
+
+    car_turn_left(turn_speed);
+    delay_s(1);
+    while(1){
+        if(back_right_black()){
+            car_stop_turn_left();
+            break;
+        }
+    }
+    car_back_goto_n_black_line(3);
+
     car_stop();
     STOP;
 }
@@ -123,7 +155,7 @@ void IntHandler_SysTick(void)
 
     switch(Count_SysTick)
     {
-        case 50://1秒
+        case 25://0.5秒
             Count_SysTick = 0;
 
             count_enter = 1;

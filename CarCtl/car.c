@@ -19,7 +19,7 @@ void car_init()
 }
 
 //前进
-void car_forward(uint16_t speed)
+void car_back(uint16_t speed)
 {
     PWMOutputState(PWM0_BASE, PWM_OUT_0_BIT, 1);
     PWMOutputState(PWM0_BASE, PWM_OUT_1_BIT, 0);
@@ -30,7 +30,7 @@ void car_forward(uint16_t speed)
 }
 
 //后退
-void car_back(uint16_t speed)
+void car_forward(uint16_t speed)
 {
     PWMOutputState(PWM0_BASE, PWM_OUT_0_BIT, 0);
     PWMOutputState(PWM0_BASE, PWM_OUT_1_BIT, 1);
@@ -87,12 +87,13 @@ void car_back_patrol_line()
 {
     extern int forward_speed;
     extern int turn_speed;
+    //int turn_speed = 40;
 
     if( back_right_black() && back_left_black() )
     {
         car_back(forward_speed);
     }
-    else if(front_right_black())
+    else if(back_right_black())
     {
         car_turn_right(turn_speed);
     }
@@ -125,8 +126,8 @@ void car_turn_right_90_degree()
     car_turn_right(turn_speed);
     delay_s(1);
     while(1){
-        if(front_right_black()){
-            car_stop_turn_left();
+        if(back_left_black()){
+            car_stop_turn_right();
             break;
         }
     }
@@ -143,7 +144,7 @@ void car_forward_goto_n_black_line(uint8_t n)
     {
         car_forward_patrol_line();
 
-        //每隔一秒触发一次黑线检测
+        //每隔0.5秒触发一次黑线检测
         if(middle_black()&&(count_enter == 1)){
             count++;
             count_enter = 0;
@@ -170,7 +171,7 @@ void car_back_goto_n_black_line(uint8_t n)
     {
         car_back_patrol_line();
 
-        //每隔一秒触发一次黑线检测
+        //每隔0.5秒触发一次黑线检测
         if(middle_black()&&(count_enter == 1)){
             count++;
             count_enter = 0;

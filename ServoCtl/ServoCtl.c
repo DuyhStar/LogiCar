@@ -15,7 +15,7 @@ void servo_init(uint16_t *initAngle)
     PCA9685_set_freq(50);
 
     int i = 0;
-    for(i = 0;i<6;i++)
+    for(i = 0;i<4;i++)
         servo_n_angle_set(i,initAngle[i]);
 }
 
@@ -35,7 +35,7 @@ void hand_set_servo()
 
 void servo_n_angle_set(uint8_t n, uint16_t angle)
 {
-    static uint16_t angle_last[16] = {760,850,600,770,1475,1000};//机械臂初始化位置
+    static uint16_t angle_last[4] = {1500,1350,680,1100};;//机械臂初始化位置
 
     uint16_t t = angle_last[n];
     //步进4表示舵机的分辨率
@@ -51,7 +51,7 @@ void servo_n_angle_set(uint8_t n, uint16_t angle)
             break;
         }
         PCA9685_pulse_us_set(n, t);
-        delay_ms(15);               //延时时间用以控制舵机运行速度
+        delay_ms(10);               //延时时间用以控制舵机运行速度
     }
 
     //保存此次舵机位置
@@ -60,7 +60,7 @@ void servo_n_angle_set(uint8_t n, uint16_t angle)
 void servo_all_update(uint16_t *val)
 {
     int i = 0;
-    for(i=0;i<6;i++){
+    for(i=0;i<4;i++){
         servo_n_angle_set(i, val[i]);
     }
 }
@@ -141,15 +141,30 @@ void place(uint8_t pos)
 }
 void place_1()
 {
-    //TODO
+    servo_n_angle_set(0, 1950);
+    servo_n_angle_set(2, 1650);
+    servo_n_angle_set(1, 2300);
+    servo_n_angle_set(3, 1100);
+
+    return_pos();
 }
 void place_2()
 {
-    //TODO
+    servo_n_angle_set(0, 1400);
+    servo_n_angle_set(2, 1300);
+    servo_n_angle_set(1, 2150);
+    servo_n_angle_set(3, 1100);
+
+    return_pos();
 }
 void place_3()
 {
-    //TODO
+    servo_n_angle_set(0, 900);
+    servo_n_angle_set(2, 1550);
+    servo_n_angle_set(1, 2250);
+    servo_n_angle_set(3, 1100);
+
+    return_pos();
 }
 
 void take(uint8_t n)
@@ -182,13 +197,35 @@ void take(uint8_t n)
 
 void take_1()
 {
-    //TODO
+    servo_n_angle_set(0, 1800);
+    servo_n_angle_set(1, 1250);
+    servo_n_angle_set(2, 2450);
+    servo_n_angle_set(3, 1800);
+
+    return_pos();
 }
 void take_2()
 {
-    //TODO
+    servo_n_angle_set(0, 1110);
+    servo_n_angle_set(1, 1250);
+    servo_n_angle_set(2, 2450);
+    servo_n_angle_set(3, 1800);
+
+    return_pos();
 }
 void take_3()
 {
-    //TODO
+    servo_n_angle_set(0, 1510);
+    servo_n_angle_set(1, 1450);
+    servo_n_angle_set(2, 2670);
+    servo_n_angle_set(3, 1390);
+
+    return_pos();
+}
+
+void return_pos()
+{
+    servo_n_angle_set(2, 680);
+    servo_n_angle_set(1, 1350);
+    servo_n_angle_set(0, 1500);
 }
