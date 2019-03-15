@@ -46,8 +46,7 @@ uint8_t  count_enter   = 0;                             //
 uint8_t  task[3]       = {1,2,3};                       //从二维码中读取的任务信息(1:红. 2:蓝. 3:绿.)
 uint8_t  color[3]      = {3,2,1};                       //物块摆放的颜色顺序
 
-int main(void)
-{
+int main(void){
     SysCtlClockSet(SYSCTL_SYSDIV_5 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |  SYSCTL_XTAL_16MHZ);
     FPUEnable();
     FPULazyStackingEnable();
@@ -103,25 +102,45 @@ int main(void)
     //TODO
 
 
-    take(1);//夹取第1个物体
-    delay_s(1);
+    //夹取第1个物体
+    take(1);
+
+    car_back(forward_speed);
+    delay_ms(200);
+
     car_back_goto_n_black_line(2);
-    place(1);//放置第1个物体
-    delay_s(1);
+    place(1);
+
+    car_forward(forward_speed);
+    delay_ms(200);
+
     car_forward_goto_n_black_line(2);
 
-    take(2);//夹取第2个物体
-    delay_s(1);
+    //夹取第2个物体
+    take(2);
+
+    car_back(forward_speed);
+    delay_ms(200);
+
     car_back_goto_n_black_line(2);
-    place(2);//放置第2个物体
-    delay_s(1);
+    place(2);
+
+    car_forward(forward_speed);
+    delay_ms(200);
+
     car_forward_goto_n_black_line(2);
 
-    take(3);//夹取第3个物体
-    delay_s(1);
+    //夹取第3个物体
+    take(3);
+
+    car_back(forward_speed);
+    delay_ms(200);
+
     car_back_goto_n_black_line(2);
-    place(3);//放置第3个物体
-    delay_s(1);
+
+    place(3);
+
+
 
     //返程
     car_turn_left(turn_speed);

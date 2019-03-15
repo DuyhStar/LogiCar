@@ -200,32 +200,33 @@ void take_1()
     servo_n_angle_set(0, 1800);
     servo_n_angle_set(1, 1250);
     servo_n_angle_set(2, 2450);
-    servo_n_angle_set(3, 1800);
+    servo_n_angle_set(3, 1900);
 
     return_pos();
 }
 void take_2()
 {
-    servo_n_angle_set(0, 1110);
-    servo_n_angle_set(1, 1250);
-    servo_n_angle_set(2, 2450);
-    servo_n_angle_set(3, 1800);
+    servo_n_angle_set(0, 1470);
+    servo_n_angle_set(1, 1450);
+    servo_n_angle_set(2, 2670);
+    servo_n_angle_set(1, 1390);
+    servo_n_angle_set(3, 1900);
 
     return_pos();
 }
 void take_3()
 {
-    servo_n_angle_set(0, 1510);
-    servo_n_angle_set(1, 1450);
-    servo_n_angle_set(2, 2670);
-    servo_n_angle_set(3, 1390);
+    servo_n_angle_set(0, 1110);
+    servo_n_angle_set(1, 1250);
+    servo_n_angle_set(2, 2450);
+    servo_n_angle_set(3, 1900);
 
     return_pos();
 }
 
 void return_pos()
 {
-    servo_n_angle_set(2, 680);
     servo_n_angle_set(1, 1350);
+    servo_n_angle_set(2, 680);
     servo_n_angle_set(0, 1500);
 }
