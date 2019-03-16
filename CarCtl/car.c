@@ -89,7 +89,7 @@ void car_back_patrol_line()
     else
         car_back(forward_speed);
 }
-void car_forward_inside_patrol_line()
+void car_forward_patrol_line_inside()
 {
     extern int forward_speed;
     extern int turn_speed;
@@ -106,7 +106,7 @@ void car_forward_inside_patrol_line()
     else
         car_forward(forward_speed);
 }
-void car_back_inside_patrol_line()
+void car_back_patrol_line_inside()
 {
     extern int forward_speed;
     extern int turn_speed;
@@ -187,6 +187,59 @@ void car_back_goto_n_black_line(uint8_t n)
     while(1)
     {
         car_back_patrol_line();
+
+        //每隔0.5秒触发一次黑线检测
+        if(middle_black()&&(count_enter == 1)){
+            count++;
+            count_enter = 0;
+            SysTickEnable();
+        }
+
+        //经过了n条黑线
+        if(count == n){
+            SysTickDisable();
+            count_enter = 1;
+            car_stop_back();
+            break;
+        }
+    }
+}
+void car_forward_goto_n_black_line_inside(uint8_t n)
+{
+    extern uint8_t count_enter;//全局变量
+
+    SysTickEnable();
+    uint8_t count = 0;
+    while(1)
+    {
+        car_forward_patrol_line_inside();
+
+        //每隔0.5秒触发一次黑线检测
+        if(middle_black()&&(count_enter == 1)){
+            count++;
+            count_enter = 0;
+            SysTickEnable();
+        }
+
+        //经过了n条黑线
+        if(count == n){
+            SysTickDisable();
+            count_enter = 1;
+            car_stop();
+            car_stop_forward();
+            break;
+        }
+    }
+}
+void car_back_goto_n_black_line_inside(uint8_t n)
+{
+    extern uint8_t count_enter;//全局变量
+
+    SysTickEnable();
+    uint8_t count = 0;
+    while(1)
+    {
+        car_back_patrol_line_inside();
 
         //每隔0.5秒触发一次黑线检测
         if(middle_black()&&(count_enter == 1)){

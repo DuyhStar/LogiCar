@@ -84,21 +84,13 @@ int main(void){
     delay_ms(500);
     car_back_goto_n_black_line(3);
 
-    //原地旋转90度,摆正方向
+    //摆正方向
     delay_s(3);
     car_turn_right_90_degree();
-
-//辅助摆正方向
-//    int t = 0;
-//    while(1)
-//    {
-//        car_back_patrol_line();
-//        delay_ms(10);
-//        t++;
-//        if(t > 400)
-//            break;
-//    }
-//    car_forward_goto_n_black_line(1);
+    car_back(forward_speed);
+    delay_ms(200);
+    car_back_goto_n_black_line(1);
+    car_forward_goto_n_black_line(1);
 
     servo_init(servoVal);//初始化机械臂控制并设置其初始位置
 
