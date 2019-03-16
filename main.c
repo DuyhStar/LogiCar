@@ -85,18 +85,18 @@ int main(void){
     car_back_goto_n_black_line(3);
 
     //摆正方向
-    delay_s(3);
     car_turn_right_90_degree();
+
     car_back(forward_speed);
     delay_ms(200);
-    car_back_goto_n_black_line(1);
-    car_forward_goto_n_black_line(1);
+    car_back_goto_n_black_line_inside(1);
+    car_forward_goto_n_black_line_inside(1);
 
-    servo_init(servoVal);//初始化机械臂控制并设置其初始位置
+    //初始化机械臂控制并设置其初始位置
+    servo_init(servoVal);
 
     //获取物块摆放的颜色顺序
     //TODO
-
 
     //夹取第1个物体
     take(1);
@@ -104,13 +104,13 @@ int main(void){
     car_back(forward_speed);
     delay_ms(200);
 
-    car_back_goto_n_black_line(2);
+    car_back_goto_n_black_line_inside(2);
     place(1);
 
     car_forward(forward_speed);
     delay_ms(200);
 
-    car_forward_goto_n_black_line(2);
+    car_forward_goto_n_black_line_inside(2);
 
     //夹取第2个物体
     take(2);
@@ -118,13 +118,13 @@ int main(void){
     car_back(forward_speed);
     delay_ms(200);
 
-    car_back_goto_n_black_line(2);
+    car_back_goto_n_black_line_inside(2);
     place(2);
 
     car_forward(forward_speed);
     delay_ms(200);
 
-    car_forward_goto_n_black_line(2);
+    car_forward_goto_n_black_line_inside(2);
 
     //夹取第3个物体
     take(3);
@@ -132,11 +132,9 @@ int main(void){
     car_back(forward_speed);
     delay_ms(200);
 
-    car_back_goto_n_black_line(2);
+    car_back_goto_n_black_line_inside(2);
 
     place(3);
-
-
 
     //返程
     car_turn_left(turn_speed);
@@ -157,7 +155,7 @@ int main(void){
             break;
         }
     }
-    car_back_goto_n_black_line(2);
+    car_back_goto_n_black_line_inside(2);
 
     car_stop();
     STOP;
