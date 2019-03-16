@@ -67,44 +67,61 @@ void car_forward_patrol_line()
     extern int turn_speed;
 
     if( front_right_black() && front_left_black() )
-    {
         car_forward(forward_speed);
-    }
     else if(front_right_black())
-    {
         car_turn_right(turn_speed);
-    }
     else if(front_left_black())
-    {
         car_turn_left(turn_speed);
-    }
     else
-    {
         car_forward(forward_speed);
-    }
 }
 void car_back_patrol_line()
 {
     extern int forward_speed;
     extern int turn_speed;
-    //int turn_speed = 40;
 
     if( back_right_black() && back_left_black() )
-    {
         car_back(forward_speed);
-    }
     else if(back_right_black())
-    {
         car_turn_right(turn_speed);
-    }
     else if(back_left_black())
-    {
         car_turn_left(turn_speed);
-    }
     else
-    {
         car_back(forward_speed);
-    }
+}
+void car_forward_inside_patrol_line()
+{
+    extern int forward_speed;
+    extern int turn_speed;
+
+    int8_t left_black  = front_left_black()  || front_middle_left_black();
+    int8_t right_black = front_right_black() || front_middle_right_black();
+
+    if( left_black && right_black )
+        car_forward(forward_speed);
+    else if(right_black)
+        car_turn_right(turn_speed);
+    else if(left_black)
+        car_turn_left(turn_speed);
+    else
+        car_forward(forward_speed);
+}
+void car_back_inside_patrol_line()
+{
+    extern int forward_speed;
+    extern int turn_speed;
+
+    int8_t left_black  = back_left_black()  || back_middle_left_black();
+    int8_t right_black = back_right_black() || back_middle_right_black();
+
+    if( left_black && right_black )
+        car_back(forward_speed);
+    else if(right_black)
+        car_turn_right(turn_speed);
+    else if(left_black)
+        car_turn_left(turn_speed);
+    else
+        car_back(forward_speed);
 }
 
 //原地左右转90度

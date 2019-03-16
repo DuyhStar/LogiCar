@@ -25,6 +25,8 @@ void car_turn_right(uint16_t range);
 //前进后退并巡线
 void car_forward_patrol_line();
 void car_back_patrol_line();
+void car_forward_inside_patrol_line();
+void car_back_inside_patrol_line();
 
 //原地左右转90度
 void car_turn_left_90_degree();
