@@ -28,6 +28,7 @@ void PWM1_1_Init();
 void PWM1_2_Init();
 void PWM1_3_Init();
 void PWM1_4_Init();
+void PWM1_5_Init();
 
 #endif /* PWM_INIT_H_ */
 

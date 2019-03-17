@@ -17,6 +17,7 @@
  * PWM1_2   PA6
  * PWM1_3   PA7
  * PWM1_4   PF0
+ * PWM1_5   PF1
  *
  */
 #include "PWM_Init.h"
@@ -234,5 +235,23 @@ void PWM1_4_Init()
     PWMPulseWidthSet(PWM1_BASE, PWM_OUT_4, PWMGenPeriodGet(PWM1_BASE, PWM_GEN_2)*75/1000);//Âö¿í1.5ms
 
     PWMOutputState(PWM1_BASE, PWM_OUT_4_BIT, true);
+    PWMGenEnable(PWM1_BASE, PWM_GEN_2);
+}
+void PWM1_5_Init()
+{
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_PWM1);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
+
+    SysCtlPWMClockSet(PWM1_CLOCK_DIV);
+
+    GPIOPinConfigure(GPIO_PF1_M1PWM5);
+    GPIOPinTypePWM(GPIO_PORTF_BASE, GPIO_PIN_1);
+
+    PWMGenConfigure(PWM1_BASE, PWM_GEN_2, PWM_GEN_MODE_UP_DOWN | PWM_GEN_MODE_NO_SYNC);
+
+    PWMGenPeriodSet(PWM1_BASE, PWM_GEN_2, SysCtlClockGet()/DIV_1/50);//ÖÜÆÚ50ms
+    PWMPulseWidthSet(PWM1_BASE, PWM_OUT_5, PWMGenPeriodGet(PWM1_BASE, PWM_GEN_2)*75/1000);//Âö¿í1.5ms
+
+    PWMOutputState(PWM1_BASE, PWM_OUT_5_BIT, true);
     PWMGenEnable(PWM1_BASE, PWM_GEN_2);
 }

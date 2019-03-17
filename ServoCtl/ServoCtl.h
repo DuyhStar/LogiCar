@@ -33,6 +33,7 @@ void hand_set_servo();
  */
 void servo_n_angle_set(uint8_t n, uint16_t angle);
 void servo_all_update(uint16_t *val);
+void pulse_set(uint8_t num, uint16_t us);
 
 /*
  * 机械臂运动路径

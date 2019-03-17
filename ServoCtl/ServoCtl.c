@@ -8,15 +8,25 @@
 
 
 
+//void servo_init(uint16_t *initAngle)
+//{
+//    I2C0_Init();
+//
+//    PCA9685_set_freq(50);
+//
+//    int i = 0;
+//    for(i = 0;i<4;i++)
+//        servo_n_angle_set(i,initAngle[i]);
+//}
 void servo_init(uint16_t *initAngle)
 {
-    I2C0_Init();
-
-    PCA9685_set_freq(50);
-
+    PWM1_0_Init();
+    PWM1_1_Init();
+    PWM1_4_Init();
+    PWM1_5_Init();
     int i = 0;
-    for(i = 0;i<4;i++)
-        servo_n_angle_set(i,initAngle[i]);
+    for(;i<4;i++)
+        pulse_set(i, initAngle[i]);
 }
 
 void hand_set_servo()
@@ -47,10 +57,10 @@ void servo_n_angle_set(uint8_t n, uint16_t angle)
             t-=5;
         else
         {
-            PCA9685_pulse_us_set(n, t);
+            pulse_set(n, t);
             break;
         }
-        PCA9685_pulse_us_set(n, t);
+        pulse_set(n, t);
         delay_ms(10);               //延时时间用以控制舵机运行速度
     }
 
@@ -108,6 +118,28 @@ void PCA9685_pulse_us_set(uint8_t num, uint16_t us)//50Hz,20ms
 {
     uint16_t pulse = (uint16_t)(128*us/625);//(4096*us/20000)
     PCA9685_set_PWM(num, 0, pulse);
+}
+void pulse_set(uint8_t num, uint16_t us)
+{
+    uint32_t pulse = PWMGenPeriodGet(PWM1_BASE, PWM_GEN_0)*us/20000;
+
+    switch(num)
+    {
+    case 0:
+        PWMPulseWidthSet(PWM1_BASE, PWM_OUT_0, pulse);
+        break;
+    case 1:
+        PWMPulseWidthSet(PWM1_BASE, PWM_OUT_1, pulse);
+        break;
+    case 2:
+        PWMPulseWidthSet(PWM1_BASE, PWM_OUT_4, pulse);
+        break;
+    case 3:
+        PWMPulseWidthSet(PWM1_BASE, PWM_OUT_5, pulse);
+        break;
+    default:
+        break;
+    }
 }
 
 void pca9685_reg_write(uint8_t reg_add, uint8_t data)
@@ -230,3 +262,4 @@ void return_pos()
     servo_n_angle_set(2, 680);
     servo_n_angle_set(0, 1500);
 }
+
