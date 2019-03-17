@@ -68,10 +68,11 @@ int main(void){
     SysTick_Init_ms(20);                //初始化一个滴答定时器
     UART0_Init(115200);                 //初始化串口0
     UART2_Init(9600);                   //初始化串口2，用来与串口屏通信
-    PF123_RGB_Init();                   //指示灯初始化
+    PF3_Green_Init();                   //指示灯初始化
     black_detect_init();                //黑线检测初始化
     key1_init();                        //按键初始化
     car_init();                         //小车所用4路PWM初始化
+    servo_init(servoVal);
 
     //按下按键,开始工作
     system_waitKey();
