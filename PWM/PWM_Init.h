@@ -16,18 +16,18 @@
 #include "driverlib/pwm.h"
 #include "driverlib/sysctl.h"
 
-//初始化PWM输出,频率 50 Hz,占空比 10.0 %
-extern void PWM0_0_Init(void);
-extern void PWM0_1_Init(void);
-extern void PWM0_2_Init(void);
-extern void PWM0_3_Init(void);
-extern void PWM0_4_Init(void);
-extern void PWM0_5_Init(void);
+void PWM0_0_Init();
+void PWM0_1_Init();
+void PWM0_2_Init();
+void PWM0_3_Init();
+void PWM0_4_Init();
+void PWM0_5_Init();
 
-extern void PWM1_0_Init(void);
-extern void PWM1_1_Init(void);
-extern void PWM1_2_Init(void);
-extern void PWM1_3_Init(void);
+void PWM1_0_Init();
+void PWM1_1_Init();
+void PWM1_2_Init();
+void PWM1_3_Init();
+void PWM1_4_Init();
 
 #endif /* PWM_INIT_H_ */
 

@@ -1,20 +1,30 @@
 /*
  * main.c
+ *
  * 左轮PWM：PB6 PB7
  * 右轮PWM：PB4 PB5
+ *
+ * PWM1_0   PD0
+ * PWM1_1   PD1
+ * PWM1_2   PA6
+ * PWM1_3   PA7
+ *
  * 按键1: PF4
+ *
  * 光电对管 :
- *    前右：PA2
- *    前左：PA3
- *    前中左:PA6
+ *    前右：    PA2
+ *    前左：    PA3
+ *    前中左：PA6
  *    前中右：PA7
- *    中中：PA4
- *    后左：PA5
- *    后右：PE3
+ *    中中：    PA4
+ *    后左：    PA5
+ *    后右：    PE3
  *    后中左：PC6
  *    后中右：PC7
+ *
  * I2C0:SCL PB2
  *      SDA PB3
+ *
  * UART1角度获得  RX:PB0
  *            TX:PB1
  */

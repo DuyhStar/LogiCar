@@ -16,9 +16,12 @@
  * PWM1_1   PD1
  * PWM1_2   PA6
  * PWM1_3   PA7
+ * PWM1_4   PF0
  *
  */
 #include "PWM_Init.h"
+#include "inc/hw_types.h"
+#include "inc/hw_gpio.h"
 
 #define PWM0_CLOCK_DIV SYSCTL_PWMDIV_1
 #define PWM1_CLOCK_DIV SYSCTL_PWMDIV_16
@@ -211,4 +214,25 @@ void PWM1_3_Init()
     PWMOutputState(PWM1_BASE, PWM_OUT_3_BIT, true);
     PWMGenEnable(PWM1_BASE, PWM_GEN_1);
 }
+void PWM1_4_Init()
+{
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_PWM1);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
 
+    HWREG(GPIO_PORTF_BASE + GPIO_O_LOCK) = GPIO_LOCK_KEY;//解锁
+    HWREG(GPIO_PORTF_BASE + GPIO_O_CR) |= 0x01;//确认
+    HWREG(GPIO_PORTF_BASE + GPIO_O_LOCK) = 0;//重新锁定
+
+    SysCtlPWMClockSet(PWM1_CLOCK_DIV);
+
+    GPIOPinConfigure(GPIO_PF0_M1PWM4);
+    GPIOPinTypePWM(GPIO_PORTF_BASE, GPIO_PIN_0);
+
+    PWMGenConfigure(PWM1_BASE, PWM_GEN_2, PWM_GEN_MODE_UP_DOWN | PWM_GEN_MODE_NO_SYNC);
+
+    PWMGenPeriodSet(PWM1_BASE, PWM_GEN_2, SysCtlClockGet()/DIV_1/50);//周期50ms
+    PWMPulseWidthSet(PWM1_BASE, PWM_OUT_4, PWMGenPeriodGet(PWM1_BASE, PWM_GEN_2)*75/1000);//脉宽1.5ms
+
+    PWMOutputState(PWM1_BASE, PWM_OUT_4_BIT, true);
+    PWMGenEnable(PWM1_BASE, PWM_GEN_2);
+}
