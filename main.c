@@ -69,6 +69,12 @@ int main(void){
     GREEN1;
 
     system_waitKey();
+
+    while(1)
+    {
+        car_back_patrol_line_inside();
+    }
+
     //小车出发至第一条线，然后原地右转90°,行驶至第一个十字交叉点。
     car_begin_goto_first_pos();
 

@@ -111,7 +111,7 @@ void car_back_patrol_line_inside()
     extern int forward_speed;
     extern int turn_speed;
 
-    int8_t left_black  = back_left_black()  || back_middle_left_black();
+    int8_t left_black  = back_middle_left_black();
     int8_t right_black = back_right_black();
 
     if( left_black && right_black )
