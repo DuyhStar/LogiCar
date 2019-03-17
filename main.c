@@ -77,7 +77,7 @@ int main(void){
 
     //扫描二维码，获取任务信息
     //TODO
-    delay_s(3);
+    delay_s(1);
 
     //小车从二维码处后退，行驶至物料存放点
     car_back(forward_speed);
@@ -89,37 +89,43 @@ int main(void){
 
     car_back(forward_speed);
     delay_ms(200);
-    car_back_goto_n_black_line_inside(1);
-    car_forward_goto_n_black_line_inside(1);
+    car_back_goto_n_black_line_inside(2);
+
+    car_forward(forward_speed);
+    delay_ms(200);
+    car_forward_goto_n_black_line_inside(2);
+    delay_s(5);
 
     //初始化机械臂控制并设置其初始位置
-    servo_init(servoVal);
+    //servo_init(servoVal);
 
     //获取物块摆放的颜色顺序
     //TODO
 
     //夹取第1个物体
-    take(1);
+    //take(1);
 
     car_back(forward_speed);
     delay_ms(200);
 
     car_back_goto_n_black_line_inside(2);
-    place(1);
+    //place(1);
+    delay_s(5);
 
     car_forward(forward_speed);
     delay_ms(200);
 
     car_forward_goto_n_black_line_inside(2);
+    delay_s(5);
 
     //夹取第2个物体
-    take(2);
+    //take(2);
 
     car_back(forward_speed);
     delay_ms(200);
 
     car_back_goto_n_black_line_inside(2);
-    place(2);
+    //place(2);
 
     car_forward(forward_speed);
     delay_ms(200);
@@ -127,14 +133,14 @@ int main(void){
     car_forward_goto_n_black_line_inside(2);
 
     //夹取第3个物体
-    take(3);
+    //take(3);
 
     car_back(forward_speed);
     delay_ms(200);
 
     car_back_goto_n_black_line_inside(2);
 
-    place(3);
+    //place(3);
 
     //返程
     car_turn_left(turn_speed);
@@ -219,6 +225,7 @@ void IntHandler_UART1(void)
         roll  -= 295;
 }
 
+//获得来自串口屏的信息，来手动调节舵机位置
 void IntHandler_UART2(void)
 {
     uint32_t ui32Status;
